@@ -558,7 +558,7 @@ try { me = localStorage.getItem(SESS_KEY); } catch(e){}
 var U = me ? getUsers()[me] : null;
 
 if(!U){
-  location.replace('login.html');
+  location.replace('index.html');
   return;
 }
 
@@ -1527,7 +1527,7 @@ function changeBet(direction){
 
   if(busy) return;
 
-  var values=[1000,2000,5000,10000,20000,50000];
+  var values=[1000,2000,5000,10000,20000,50000,100000];
 
   var index=values.indexOf(bet);
 
@@ -1591,7 +1591,7 @@ document.getElementById('logout').onclick=function(){
 
   try { localStorage.removeItem(SESS_KEY); } catch(e){}
 
-  location.href='login.html';
+  location.href='index.html';
 
 };
 
