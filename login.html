@@ -97,7 +97,7 @@ if(!users.anjai){
 /* SUDAH LOGIN? LANGSUNG MASUK */
 try{
   var s=localStorage.getItem(SESS_KEY);
-  if(s && getUsers()[s]){ location.replace('index.html'); return; }
+  if(s && getUsers()[s]){ location.replace('slot.html'); return; }
 }catch(e){}
 
 var $=function(id){return document.getElementById(id);};
@@ -116,7 +116,7 @@ $('tReg').onclick=function(){show(true);};
 
 function enter(key){
   try{ localStorage.setItem(SESS_KEY,key); }catch(e){}
-  location.href='index.html';
+  location.href='slot.html';
 }
 
 $('bLogin').onclick=function(){
