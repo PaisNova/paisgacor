@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<link rel="icon" href="./jeus.png" type="image/png" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaisGacor67 - Login</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;min-height:100%;overflow-x:hidden;font-family:Arial,sans-serif}
+body{padding:5px;color:white;background:radial-gradient(ellipse at 50% 15%,#ff8270,transparent 55%),linear-gradient(150deg,#a90029,#e34d37 45%,#651020);min-height:100vh}
+.machine{width:100%;padding:9px;border:3px solid #f5bd60;border-radius:20px;background:radial-gradient(ellipse at top,#d84a36,transparent 65%),linear-gradient(145deg,#a51b31,#641020 80%);box-shadow:inset 0 0 0 3px #8a281f,inset 0 0 25px #ffbd6944,0 8px 20px #28000b99}
+.lights{height:8px;margin:0 12px 7px;border-radius:10px;background:repeating-linear-gradient(90deg,#fff5bd 0 5px,#ff344b 5px 12px,#ffc75d 12px 18px);box-shadow:0 0 12px #ff9e45}
+.title{padding:10px 4px;border:3px solid #ffd477;border-radius:15px;background:linear-gradient(180deg,#ffb65c,#a71932 45%,#510b19);color:#fff5b7;text-align:center;font:29px Impact,"Arial Black",sans-serif;letter-spacing:2px;text-shadow:0 3px #741020,0 0 10px #ffca65;box-shadow:inset 0 0 0 3px #84201e,0 4px 0 #4a1014,0 0 15px #ffb34b55}
+.card{margin-top:12px;padding:14px 12px;border:4px solid #e6ae58;border-radius:18px;background:linear-gradient(180deg,#7c2524,#9c332e);box-shadow:inset 0 0 0 3px #72201c,0 6px 0 #6c1c21,0 10px 18px #0008}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.tab{padding:10px 2px;border:2px solid #d4a457;border-radius:12px;background:linear-gradient(#a64a2d,#64241e);color:#ffe3a2;font-size:13px;font-weight:bold;cursor:pointer}
+.tab.on{background:linear-gradient(#42d1ad,#087e70);color:#fff19a;text-shadow:0 2px #0a5a4f}
+label{display:block;margin:10px 0 4px;color:#ffe0aa;font-size:11px;font-weight:bold;letter-spacing:1px}
+input{width:100%;padding:12px;border:2px solid #a95c38;border-radius:12px;background:#4d201a;color:#bffff0;font-size:16px;outline:none}
+input:focus{border-color:#ffd477;box-shadow:0 0 10px #ffd47766}
+.go{width:100%;margin-top:16px;padding:14px;border:3px solid #e7b568;border-radius:14px;background:linear-gradient(#20a78b,#086b60);color:#fff3a0;font-size:18px;font-weight:900;text-shadow:0 2px #126454;box-shadow:0 4px 0 #642b24;cursor:pointer}
+.go:active{transform:scale(.97);filter:brightness(1.2)}
+.err{min-height:18px;margin-top:10px;color:#ffd0d0;font-size:13px;text-align:center;font-weight:bold}
+.hint{margin-top:8px;color:#ffe0aa;font-size:11px;text-align:center;opacity:.8}
+.hide{display:none}
+.zeus{width:100%;max-width:160px;margin:6px auto 8px}
+.zeus img{display:block;width:100%;height:auto;object-fit:contain}
+</style>
+</head>
+<body>
+<div class="machine">
+<div class="lights"></div>
+<div class="zeus"><img src="zeus.png" alt="Zeus" onerror="this.style.display='none'"></div>
+<div class="title">PaisGacor67</div>
+<div class="card">
+  <div class="tabs">
+    <button class="tab on" id="tLogin" type="button">MASUK</button>
+    <button class="tab" id="tReg" type="button">DAFTAR</button>
+  </div>
+
+  <div id="fLogin">
+    <label>USERNAME</label>
+    <input id="lu" autocomplete="username" autocapitalize="none">
+    <label>PASSWORD</label>
+    <input id="lp" type="password" autocomplete="current-password">
+    <button class="go" id="bLogin" type="button">MASUK</button>
+  </div>
+
+  <div id="fReg" class="hide">
+    <label>USERNAME</label>
+    <input id="ru" autocomplete="username" autocapitalize="none">
+    <label>NOMOR HP</label>
+    <input id="rn" type="tel" inputmode="numeric" placeholder="08xxxxxxxxxx">
+    <label>PASSWORD</label>
+    <input id="rp" type="password" autocomplete="new-password">
+    <button class="go" id="bReg" type="button">DAFTAR</button>
+  </div>
+
+  <div class="err" id="err"></div>
+  <div class="hint">© Pais 2026</div>
+</div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var USERS_KEY='pg_users';
+var SESS_KEY='pg_session';
+var START_SALDO=30000;
+
+function getUsers(){
+  try{ return JSON.parse(localStorage.getItem(USERS_KEY))||{}; }
+  catch(e){ return {}; }
+}
+
+function setUsers(u){
+  try{ localStorage.setItem(USERS_KEY,JSON.stringify(u)); }
+  catch(e){}
+}
+
+/* AKUN TESTER BAWAAN */
+var users=getUsers();
+if(!users.anjai){
+  users.anjai={
+    username:'anjai',
+    pass:'anjai',
+    phone:'081234567890',
+    saldo:START_SALDO,
+    best:0,
+    spins:0
+  };
+  setUsers(users);
+}
+
+/* SUDAH LOGIN? LANGSUNG MASUK */
+try{
+  var s=localStorage.getItem(SESS_KEY);
+  if(s && getUsers()[s]){ location.replace('index.html'); return; }
+}catch(e){}
+
+var $=function(id){return document.getElementById(id);};
+var err=$('err');
+
+function show(reg){
+  $('fLogin').className=reg?'hide':'';
+  $('fReg').className=reg?'':'hide';
+  $('tLogin').className='tab'+(reg?'':' on');
+  $('tReg').className='tab'+(reg?' on':'');
+  err.textContent='';
+}
+
+$('tLogin').onclick=function(){show(false);};
+$('tReg').onclick=function(){show(true);};
+
+function enter(key){
+  try{ localStorage.setItem(SESS_KEY,key); }catch(e){}
+  location.href='index.html';
+}
+
+$('bLogin').onclick=function(){
+  var key=$('lu').value.trim().toLowerCase();
+  var pw=$('lp').value;
+  var u=getUsers()[key];
+
+  if(!key || !pw){ err.textContent='Isi username dan password.'; return; }
+  if(!u || u.pass!==pw){ err.textContent='Username atau password salah.'; return; }
+
+  enter(key);
+};
+
+$('bReg').onclick=function(){
+  var name=$('ru').value.trim();
+  var key=name.toLowerCase();
+  var phone=$('rn').value.trim();
+  var pw=$('rp').value;
+  var all=getUsers();
+
+  if(name.length<3){ err.textContent='Username minimal 3 karakter.'; return; }
+  if(!/^[0-9+]{6,16}$/.test(phone)){ err.textContent='Nomor HP wajib diisi (angka saja, minimal 6 digit).'; return; }
+  if(pw.length<3){ err.textContent='Password minimal 3 karakter.'; return; }
+  if(all[key]){ err.textContent='Username sudah dipakai.'; return; }
+
+  all[key]={
+    username:name,
+    pass:pw,
+    phone:phone,
+    saldo:START_SALDO,
+    best:0,
+    spins:0
+  };
+
+  setUsers(all);
+  enter(key);
+};
+
+})();
+</script>
+</body>
+</html>
